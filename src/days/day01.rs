@@ -13,7 +13,7 @@ fn part1(list1: Vec<u64>, list2: Vec<u64>) {
     ) {
         sum += tup.0.abs_diff(*tup.1)
     }
-    println!("Result is {}", sum)
+    println!("Part 1: Result is {}", sum)
 }
 
 fn count_instances(x: &u64, list: &[u64]) -> u64 {
@@ -24,7 +24,7 @@ fn count_instances(x: &u64, list: &[u64]) -> u64 {
 fn part2(list1: Vec<u64>, list2: Vec<u64>) {
     let slice = list2.as_slice();
     let result: u64 = list1.iter().map(|x| x * count_instances(x, slice)).sum();
-    println!("Result is {}", result)
+    println!("Part 2: Result is {}", result)
 }
 
 pub fn solution(input: &std::path::Path, parts: PartSelection) -> Result<(), String> {
@@ -41,7 +41,11 @@ pub fn solution(input: &std::path::Path, parts: PartSelection) -> Result<(), Str
         v1.push(nums[0]);
         v2.push(nums[1]);
     }
-    part1(v1.clone(), v2.clone());
-    part2(v1.clone(), v2.clone());
+    if parts == PartSelection::PartOne || parts == PartSelection::All {
+        part1(v1.clone(), v2.clone());
+    }
+    if parts == PartSelection::PartTwo || parts == PartSelection::All {
+        part2(v1, v2);
+    }
     Ok(())
 }
