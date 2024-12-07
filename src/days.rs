@@ -2,6 +2,7 @@ use std::result::Result;
 
 pub mod day01;
 pub mod day02;
+pub mod day03;
 
 #[derive(PartialEq, Debug)]
 pub enum PartSelection {
@@ -31,6 +32,7 @@ pub fn dispatch_to_day(args: &AoCArgs) -> Result<(), String> {
         match args.day {
             1 => day01::solution(args.input.as_path(), parts),
             2 => day02::solution(args.input.as_path(), parts),
+            3 => day03::solution(args.input.as_path(), parts),
             _ => Err(format!("Day {} not yet implemented.", args.day)),
         }
     } else {

@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 itertools = "0.13.0"
 pico-args = { version = "=0.5.0", features = ["eq-separator"] }
+utf8-chars = "3.0.5"
