@@ -53,7 +53,3 @@ pub fn part2(input: &std::path::Path) -> Result<(), String>{
     println!("Part 2: Result is {}", result);
     Ok(())
 }
-
-
-
-

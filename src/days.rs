@@ -4,6 +4,7 @@ pub mod day01;
 pub mod day02;
 pub mod day03;
 pub mod day04;
+pub mod day05;
 
 #[derive(PartialEq, Debug)]
 pub enum PartSelection {
@@ -39,6 +40,7 @@ pub fn dispatch_to_day(args: &AoCArgs) -> Result<(), String> {
                 2 => day02::part1(input)?,
                 3 => day03::part1(input)?,
                 4 => day04::part1(input)?,
+                5 => day05::part1(input)?,
                 _ => return Err(e_msg)
             };
         }
@@ -48,6 +50,7 @@ pub fn dispatch_to_day(args: &AoCArgs) -> Result<(), String> {
                 2 => day02::part2(input)?,
                 3 => day03::part2(input)?,
                 4 => day04::part2(input)?,
+                5 => day05::part2(input)?,
                 _ => return Err(e_msg)
             };
         };
