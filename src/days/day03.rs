@@ -5,8 +5,6 @@ use utf8_chars::{
     Chars
 };
 
-use super::PartSelection;
-
 #[derive(Debug)]
 enum MulInstruction {
     CharM,
@@ -154,7 +152,7 @@ const TEST2: &str = "\
 xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))
 ";
 
-fn part1(input: &std::path::Path) -> Result<(), String> {
+pub fn part1(input: &std::path::Path) -> Result<(), String> {
     let f = match File::open(input) {
         Ok(f) => {f}
         Err(message)  => {
@@ -183,7 +181,7 @@ fn part1(input: &std::path::Path) -> Result<(), String> {
     Ok(())
 }
 
-fn part2(input: &std::path::Path) -> Result<(), String> {
+pub fn part2(input: &std::path::Path) -> Result<(), String> {
     let f = match File::open(input) {
         Ok(f) => {f}
         Err(message)  => {
@@ -212,12 +210,5 @@ fn part2(input: &std::path::Path) -> Result<(), String> {
         }
     };
     println!("Result is {}", state.result);
-    Ok(())
-}
-
-pub fn solution(input: &std::path::Path, part: PartSelection) -> Result<(), String> {
-
-    part2(input);
-
     Ok(())
 }

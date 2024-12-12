@@ -19,6 +19,7 @@ pub struct AoCArgs {
     pub input: std::path::PathBuf,
 }
 
+
 pub fn dispatch_to_day(args: &AoCArgs) -> Result<(), String> {
     if (args.day > 24 || args.day == 0) {
         return Err(String::from("Day must be in the range 1-24"));
@@ -30,13 +31,27 @@ pub fn dispatch_to_day(args: &AoCArgs) -> Result<(), String> {
         _ => None,
     };
     if let Some(parts) = part_selection {
-        match args.day {
-            1 => day01::solution(args.input.as_path(), parts),
-            2 => day02::solution(args.input.as_path(), parts),
-            3 => day03::solution(args.input.as_path(), parts),
-            4 => day04::solution(args.input.as_path(), parts),
-            _ => Err(format!("Day {} not yet implemented.", args.day)),
+        let input = args.input.as_path();
+        let e_msg = format!("Day {} not implemented yet!", args.day);
+        if parts == PartSelection::All || parts == PartSelection::PartOne {
+            match args.day {
+                1 => day01::part1(input)?,
+                2 => day02::part1(input)?,
+                3 => day03::part1(input)?,
+                4 => day04::part1(input)?,
+                _ => return Err(e_msg)
+            };
         }
+        if parts == PartSelection::All || parts == PartSelection::PartTwo {
+            match args.day {
+                1 => day01::part2(input)?,
+                2 => day02::part2(input)?,
+                3 => day03::part2(input)?,
+                4 => day04::part2(input)?,
+                _ => return Err(e_msg)
+            };
+        };
+        Ok(())
     } else {
         Err(String::from("If specified, part must be one or two!"))
     }

@@ -1,8 +1,6 @@
-use std::iter::FromIterator;
 use std::io::BufReader;
 use std::io::prelude::*;
 use std::fs::File;
-use super::PartSelection;
 
 enum Dir {
     N,
@@ -26,6 +24,25 @@ type MasMas = [Coordinate; 5];
 
 const DIRS: [Dir; 8] = [Dir::N, Dir::NE, Dir::E, Dir::SE, Dir::S, Dir::SW, Dir::W, Dir::NW];
 
+
+fn read_input(input: &std::path::Path) -> Result<Vec<Vec<char>>, String> {
+    let f = match File::open(input) {
+        Ok(f) => {f}
+        Err(message)  => {
+            println!("Unable to open {:?} due to {}", input, message);
+            return Err("IO/Error".to_string());
+        }
+    };
+    let reader = BufReader::new(f);
+    Ok(reader.lines().map(|s| {
+        if let Ok(line) = s {
+            let chars: Vec<char> = line.trim().chars().collect();
+            chars
+        } else {
+            panic!("Error unpacking text from {:?}", input);
+        }
+    }).collect())
+}
 
 fn shift_coords(initial_pos: Coordinate, dir: &Dir, shift: isize) -> Result<Coordinate, &str> {
     let (row, col) = initial_pos;
@@ -99,7 +116,8 @@ fn get_x_mas_word(words: &[Vec<char>], coords: MasMas) -> String {
     }).collect()
 }
 
-fn part1(words: &[Vec<char>]) -> Result<(), String> {
+pub fn part1(input: &std::path::Path) -> Result<(), String> {
+    let words = read_input(input)?;
     let puzzle_size = (words.len(), words[0].len());
     let mut r_pos = 0;
     let mut word_count = 0;
@@ -109,7 +127,7 @@ fn part1(words: &[Vec<char>]) -> Result<(), String> {
             if words[r_pos][c_pos] == 'X' {
                 for d in DIRS.iter() {
                     if let Some(coords) = get_xmas_coordinates((r_pos, c_pos), d, puzzle_size) {
-                        if get_word(words, coords).as_str() == "XMAS" {
+                        if get_word(&words, coords).as_str() == "XMAS" {
                             word_count += 1;
                         }
                     }
@@ -123,7 +141,8 @@ fn part1(words: &[Vec<char>]) -> Result<(), String> {
     Ok(())
 }
 
-fn part2(words: &[Vec<char>]) -> Result<(), String> {
+pub fn part2(input: &std::path::Path) -> Result<(), String> {
+    let words = read_input(input)?;
     let puzzle_size = (words.len(), words[0].len());
     let mut r_pos = 0;
     let mut word_count = 0;
@@ -133,7 +152,7 @@ fn part2(words: &[Vec<char>]) -> Result<(), String> {
             let tl_char = words[r_pos][c_pos];
             if tl_char == 'M' || tl_char == 'S' {
                 if let Some(coords) = get_x_mas_coordinates((r_pos, c_pos), puzzle_size) {
-                    let word = get_x_mas_word(words, coords);
+                    let word = get_x_mas_word(&words, coords);
                     match word.as_str() {
                         "MMSAS" | "MSMAS" | "SMSAM" | "SSMAM" => {
                             word_count += 1;
@@ -150,24 +169,3 @@ fn part2(words: &[Vec<char>]) -> Result<(), String> {
     Ok(())
 }
 
-pub fn solution(input: &std::path::Path, part: PartSelection) -> Result<(), String> {
-    let f = match File::open(input) {
-        Ok(f) => {f}
-        Err(message)  => {
-            println!("Unable to open {:?} due to {}", input, message);
-            return Err("IO/Error".to_string());
-        }
-    };
-    let reader = BufReader::new(f);
-    let words: Vec<Vec<char>> = reader.lines().map(|s| {
-        if let Ok(line) = s {
-            let chars: Vec<char> = line.trim().chars().collect();
-            chars
-        } else {
-            panic!("Error unpacking text from {:?}", input);
-        }
-    }).collect();
-    part1(&words);
-    part2(&words);
-    Ok(())
-}
